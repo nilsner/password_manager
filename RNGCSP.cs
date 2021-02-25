@@ -7,7 +7,7 @@ namespace LösenordsHanterare
 {
     public class RNGCSP
     {
-        private static RNGCrypto rngC = new RNGCrypto();
+        private static RNGCryptoServiceProvider rngC = new RNGCryptoServiceProvider();
 
         public static void Main()
         {
