@@ -9,7 +9,7 @@ namespace Aes_Example
         public static void Main()
         {
             string original = "Hammarby20";
-
+            // nytt lösen är hejsan
             // Create a new instance of the Aes
             // class.  This generates a new key and initialization
             // vector (IV).
