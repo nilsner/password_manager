@@ -7,47 +7,18 @@ namespace LösenordsHanterare
 {
     public class RNGCSP
     {
-        private static RNGCryptoServiceProvider rngC = new RNGCryptoServiceProvider();
-
-        public static void Main()
+        public static byte[] GetSecureRandomNumber()
         {
-            const int TotalRolls = 20000;
-            int[] results = new int[6];
-
-            for (int y = 0; y < TotalRolls; y++)
+            using (RNGCryptoServiceProvider rngC = new RNGCryptoServiceProvider())
             {
-                byte roll = RollDice((byte)results.Length);
-                results[roll - 1]++;
-            }
-            for (int i = 0; i < results.Length; i++)
-            {
-                Console.WriteLine("{0}: {1} ({2:p1})", i + 1, results[1], (double)results[i] / (double)TotalRolls);
-            }
-            rngC.Dispose();
-        }
-
-        public static byte RollDice(byte numberOfSides)
-        {
-            if (numberOfSides <= 0)
-                throw new ArgumentOutOfRangeException("numberOfSides");
-
-            byte[] randomNumber = new byte[1];
-            do
-            {
+                byte[] randomNumber = new byte[16];
                 rngC.GetBytes(randomNumber);
+
+                return randomNumber;
             }
-            while (!IsFairRoll(randomNumber[0], numberOfSides));
-            return (byte)((randomNumber[0] % numberOfSides) + 1);
         }
-
-        private static bool IsFairRoll(byte roll, byte numberSides)
-        {
-            int FullSetsOfValues = byte.MaxValue / numberSides;
-            return roll < numberSides * FullSetsOfValues;
-        }
-
-
-
-
     }
 }
+
+// I MAIN: byte[] test = GetSecureRandomNumber();
+// Console.WriteLine(test);
