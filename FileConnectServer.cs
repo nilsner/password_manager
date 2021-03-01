@@ -3,7 +3,7 @@ using System.Text.Json;
 using System.IO;
 using System.Security.Cryptography;
 
-namespace Code_off
+namespace PasswordManager
 {
     public class FileConnectServer : serverFile
     {
