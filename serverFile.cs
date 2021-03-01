@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Code_off
+namespace PasswordManager
 {
     public class serverFile : AES
     {
