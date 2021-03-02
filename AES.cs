@@ -1,27 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Security.Cryptography;
+using System.IO;
 
 namespace PasswordManager
 {
-    public class AES : FileConnector
+    public class AES : ConnectionKey
     {
-        public AES()
-        {
-            
-            //byte[] secretKey = ReadFromFile();
-            //using (Aes myAes = Aes.Create())
-            //{
-
-            //    //Slut på RNG försök från Nils
-
-            //    // Encrypt the string to an array of bytes.
-            //    byte[] encrypted = EncryptStringToBytes_Aes(secretKey, myAes.IV);
-            //    // Decrypt the bytes to a string.
-            //    //string roundtrip = DecryptStringFromBytes_Aes(secretKey, myAes.IV);
-
-            //}
-        }
         public static byte[] EncryptStringToBytes_Aes(string plainText, byte[] Key, byte[] IV)
         {
             // Check arguments.
@@ -33,15 +19,15 @@ namespace PasswordManager
                 throw new ArgumentNullException("IV");
             byte[] encrypted;
 
+            ConnectionKey key = new ConnectionKey(); // nytt
+            
+
             // Create an Aes object
             // with the specified key and IV.
             using (Aes aesAlg = Aes.Create())
             {
-                //RNG försök från Nils
-                //aesAlg.Padding = PaddingMode.PKCS7;
 
-                //Slut på RNG försök från Nils
-                aesAlg.Key = Key;
+                aesAlg.Key = key.ConnectsKeyAndPsw(plainText); // nytt
                 aesAlg.IV = IV;
 
                 // Create an encryptor to perform the stream transform.
