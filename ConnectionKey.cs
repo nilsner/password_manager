@@ -8,30 +8,26 @@ namespace PasswordManager
 {
     public class ConnectionKey : SecretKey
     {
-        // pssibly unnecessary
+        // possibly unnecessary
         private const string usageText = "Usage: RFC2898 <password>\nYou must specify the password. \n";
+        Rfc2898DeriveBytes k1;
 
-        public void ConnectsKeyAndPsw()
+        public Rfc2898DeriveBytes ConnectsKeyAndPsw(string psw1)
         {
             // get the password using JSON from file.
-            string psw1 = "";
-            byte[] salt1 = sKeyGenerator();
-            string data1 = "test data"; 
-
-            int myIterations = 1000;
-
+            byte[] salt1 = SKeyGenerator();
+          
             try
             {
-                Rfc2898DeriveBytes k1 = new Rfc2898DeriveBytes(psw1, salt1, myIterations);
-                Rfc2898DeriveBytes k2 = new Rfc2898DeriveBytes(psw1, salt1);
-
-                // Possibly add the AES result
+                Rfc2898DeriveBytes k1 = new Rfc2898DeriveBytes(psw1, salt1);   
             }
-
-            catch 
+            catch (Exception e)
             {
-                Console.WriteLine("Could not connect secret key and the masterpassword.");
+                Console.WriteLine("Error: {0}", e);
             }
+            return k1;
         }
+
+      
     }
 }
