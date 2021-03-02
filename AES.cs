@@ -8,6 +8,8 @@ namespace PasswordManager
 {
     public class AES : ConnectionKey
     {
+
+        public static ConnectionKey key = new ConnectionKey(); // nytt
         public static byte[] EncryptStringToBytes_Aes(string plainText, byte[] Key, byte[] IV)
         {
             // Check arguments.
@@ -19,7 +21,7 @@ namespace PasswordManager
                 throw new ArgumentNullException("IV");
             byte[] encrypted;
 
-            ConnectionKey key = new ConnectionKey(); // nytt
+            
             
 
             // Create an Aes object
