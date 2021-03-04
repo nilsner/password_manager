@@ -1,34 +1,39 @@
-﻿using System;
+using System;
 using System.Text.Json;
 using System.IO;
 using System.Security.Cryptography;
+using System.Collections.Generic;
 
-namespace PasswordManager
+namespace Code_off
 {
-    public class FileConnectServer : serverFile
+    public class FileConnectServer : FileConnector
     {
-       
+        
 
-        public static void writeToServer(string inputPsw)
+        public static void writeToServer(string inputPsw, string txt, string value) 
         {
             byte[] openIv;
-            byte[] openEnc;
+            //byte[] openEnc;
+            byte[] svar4;
+           
             using (Aes myAes = Aes.Create())
             {
-                //Slut på RNG försök från Nils
-                // Encrypt the string to an array of bytes.
-
+               
                 WriteToFile();
-                byte[] secretKey = ReadFromFile();
+                byte[] secretKey = ConnectsKeyAndPsw(inputPsw);
                 openIv = myAes.IV;
-                openEnc = EncryptStringToBytes_Aes(inputPsw, secretKey, openIv);
-                
+                //openEnc = EncryptStringToBytes_Aes(txt, secretKey, openIv);
+                //gogo.Add(txt, value);
+                //serialisera och sen kryptera gogo
+                string jsonString3 = JsonSerializer.Serialize(Vault.AddToVault(txt, value));
+                svar4 = EncryptStringToBytes_Aes(jsonString3, secretKey, openIv);
+
             }
-            //kör aes och spara ner dess IV här.
+
             serverFile serverObj = new serverFile()
             {
-                vault = openEnc, //encrypt metoden som returnerar byte[] av lösenordet.
-                IV = openIv //skapa en IV genom aes?
+                vault = svar4, 
+                IV = openIv //skapa en IV genom aes
             };
 
             string jsonString1 = JsonSerializer.Serialize(serverObj);
