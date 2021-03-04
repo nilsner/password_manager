@@ -1,18 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Security.Cryptography;
+using System;
 using System.IO;
+using System.Security.Cryptography;
 
-namespace PasswordManager
+namespace Code_off
 {
     public class AES : ConnectionKey
     {
+        public static ConnectionKey key = new ConnectionKey();
+        public AES()
+        {
+            
+          
 
-        public static ConnectionKey key = new ConnectionKey(); // nytt
+        }
         public static byte[] EncryptStringToBytes_Aes(string plainText, byte[] Key, byte[] IV)
         {
-            // Check arguments.
+           
             if (plainText == null || plainText.Length <= 0)
                 throw new ArgumentNullException("plainText");
             if (Key == null || Key.Length <= 0)
@@ -21,15 +24,11 @@ namespace PasswordManager
                 throw new ArgumentNullException("IV");
             byte[] encrypted;
 
-            
-            
-
-            // Create an Aes object
-            // with the specified key and IV.
+           
             using (Aes aesAlg = Aes.Create())
             {
-
-                aesAlg.Key = key.ConnectsKeyAndPsw(plainText); // nytt
+               
+                aesAlg.Key = Key;
                 aesAlg.IV = IV;
 
                 // Create an encryptor to perform the stream transform.
@@ -56,13 +55,14 @@ namespace PasswordManager
 
         public static string DecryptStringFromBytes_Aes(byte[] cipherText, byte[] Key, byte[] IV)
         {
-            // Check arguments.
+           
             if (cipherText == null || cipherText.Length <= 0)
                 throw new ArgumentNullException("cipherText");
-            if (Key == null || Key.Length <= 0)
+            if (Key == null || Key.Length <= 0 || Key.Length > 16) //Om längre än 16 så ska det inte köras
                 throw new ArgumentNullException("Key");
             if (IV == null || IV.Length <= 0)
                 throw new ArgumentNullException("IV");
+            
 
             // Declare the string used to hold
             // the decrypted text.
@@ -72,10 +72,7 @@ namespace PasswordManager
             // with the specified key and IV.
             using (Aes aesAlg = Aes.Create())
             {
-                //RNG försök från Nils
-                //aesAlg.Padding = PaddingMode.PKCS7; //padding
-
-                //Slut på RNG försök från Nils
+               
                 aesAlg.Key = Key;
                 aesAlg.IV = IV;
 
