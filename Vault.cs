@@ -1,10 +1,25 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace PasswordManager
+namespace Code_off
 {
-    class Vault
+    public class Vault : FileConnectServer
     {
+        public static Dictionary<string, string> pswVault = new Dictionary<string, string>();
+
+        public static Dictionary<string, string> AddToVault(string key, string value)
+        {
+            try
+            {
+                pswVault.Add(key, value);
+                return pswVault;
+            }
+            catch (ArgumentException)
+            {
+                Console.WriteLine(key + " aldready exist");
+                return pswVault;
+            }
+        }
     }
 }
