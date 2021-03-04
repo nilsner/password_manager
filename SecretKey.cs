@@ -1,12 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Security.Cryptography;
 using System.IO;
 
-namespace PasswordManager
+namespace Code_off
 {
-    class SecretKey
+    public class SecretKey 
     {
 
         public SecretKey()
@@ -14,7 +14,6 @@ namespace PasswordManager
 
         }
 
-        
 
         public static byte[] sKeyGenerator()
         {
@@ -22,9 +21,10 @@ namespace PasswordManager
             using (RNGCryptoServiceProvider rngCsp = new RNGCryptoServiceProvider())
             {
                 rngCsp.GetBytes(sKey);
+
                 return sKey;
             }
-            
+
         }
 
 
