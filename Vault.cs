@@ -8,8 +8,9 @@ namespace Code_off
     {
         public static Dictionary<string, string> pswVault = new Dictionary<string, string>();
 
-        public static Dictionary<string, string> AddToVault(string key, string value)
+        public static Dictionary<string, string> AddToVault(string key, string value, Dictionary<string,string> x)
         {
+            pswVault = x;
             try
             {
                 pswVault.Add(key, value);
