@@ -9,8 +9,6 @@ namespace Code_off
         public static ConnectionKey key = new ConnectionKey();
         public AES()
         {
-            
-          
 
         }
         public static byte[] EncryptStringToBytes_Aes(string plainText, byte[] Key, byte[] IV)
@@ -23,25 +21,20 @@ namespace Code_off
             if (IV == null || IV.Length <= 0)
                 throw new ArgumentNullException("IV");
             byte[] encrypted;
-
-           
             using (Aes aesAlg = Aes.Create())
             {
                
                 aesAlg.Key = Key;
                 aesAlg.IV = IV;
 
-                // Create an encryptor to perform the stream transform.
                 ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
 
-                // Create the streams used for encryption.
                 using (MemoryStream msEncrypt = new MemoryStream())
                 {
                     using (CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
                     {
                         using (StreamWriter swEncrypt = new StreamWriter(csEncrypt))
                         {
-                            //Write all data to the stream.
                             swEncrypt.Write(plainText);
                         }
                         encrypted = msEncrypt.ToArray();
@@ -49,7 +42,6 @@ namespace Code_off
                 }
             }
 
-            // Return the encrypted bytes from the memory stream.
             return encrypted;
         }
 
@@ -63,13 +55,8 @@ namespace Code_off
             if (IV == null || IV.Length <= 0)
                 throw new ArgumentNullException("IV");
             
-
-            // Declare the string used to hold
-            // the decrypted text.
             string plaintext = null;
 
-            // Create an Aes object
-            // with the specified key and IV.
             using (Aes aesAlg = Aes.Create())
             {
                
