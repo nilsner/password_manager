@@ -22,5 +22,38 @@ namespace Code_off
                 return pswVault;
             }
         }
+
+        public static void RemoveFromVault(string key, string psw)
+        {
+            Dictionary<string, string> x = ConvertByteToDic(psw);
+            int count = 0;
+            foreach (var dic in x)
+            {
+                if (dic.Key == key)
+                {
+                    count++;
+                }
+            }
+            if (count >= 1)
+            {
+                foreach(KeyValuePair<string, string> kvp in x)
+                {
+                    if (kvp.Key == key)
+                    {
+                        x.Remove(kvp.Key);
+                        Console.WriteLine("Succesfully removed password");
+                    }
+                    else
+                    {
+                        count++;
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("The serivce you tried to delete does not exist");
+            }
+            UpdateVault(psw, x);
+        }
     }
 }
