@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace Code_off
 {
-    public class userInfo
+    public class UserInfo
     {
         public string Id {get; set;}
         public byte[] secretKey {get; set;}
