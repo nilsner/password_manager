@@ -15,7 +15,7 @@ namespace Code_off
         }
 
 
-        public static byte[] sKeyGenerator()
+        public static byte[] SKeyGenerator()
         {
             byte[] sKey = new byte[16];
             using (RNGCryptoServiceProvider rngCsp = new RNGCryptoServiceProvider())
