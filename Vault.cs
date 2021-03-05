@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Code_off
 {
-    public class Vault : FileConnectServer
+    public class Vault : ServerFileConnect
     {
         public static Dictionary<string, string> pswVault = new Dictionary<string, string>();
 
@@ -25,6 +24,7 @@ namespace Code_off
 
         public static void RemoveFromVault(string key, string psw)
         {
+            
             Dictionary<string, string> x = ConvertByteToDic(psw);
             int count = 0;
             foreach (var dic in x)
@@ -36,7 +36,7 @@ namespace Code_off
             }
             if (count >= 1)
             {
-                foreach(KeyValuePair<string, string> kvp in x)
+                foreach (KeyValuePair<string, string> kvp in x)
                 {
                     if (kvp.Key == key)
                     {
@@ -54,6 +54,7 @@ namespace Code_off
                 Console.WriteLine("The serivce you tried to delete does not exist");
             }
             UpdateVault(psw, x);
+            
         }
     }
 }
