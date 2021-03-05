@@ -23,7 +23,6 @@ namespace Code_off
             byte[] encrypted;
             using (Aes aesAlg = Aes.Create())
             {
-               
                 aesAlg.Key = Key;
                 aesAlg.IV = IV;
 
@@ -47,7 +46,7 @@ namespace Code_off
 
         public static string DecryptStringFromBytes_Aes(byte[] cipherText, byte[] Key, byte[] IV)
         {
-           
+            
             if (cipherText == null || cipherText.Length <= 0)
                 throw new ArgumentNullException("cipherText");
             if (Key == null || Key.Length <= 0 || Key.Length > 16) //Om längre än 16 så ska det inte köras
@@ -75,7 +74,14 @@ namespace Code_off
                         {
                             // Read the decrypted bytes from the decrypting stream
                             // and place them in a string.
-                            plaintext = srDecrypt.ReadToEnd();
+                            try
+                            {
+                                plaintext = srDecrypt.ReadToEnd();
+                            }
+                            catch (Exception)
+                            {
+
+                            }                          
                         }
                     }
                 }
