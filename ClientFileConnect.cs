@@ -1,12 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Text.Json;
 
 namespace Code_off
 {
-    public class FileConnector : AES 
+    public class ClientFileConnect : AES 
     {
 
         public byte[] secretKey { get; set; }
@@ -16,11 +14,10 @@ namespace Code_off
         {
             byte[] saltClient = SKeyGenerator();
 
-            FileConnector con1 = new FileConnector()
+            ClientFileConnect con1 = new ClientFileConnect()
             {
                 secretKey = saltClient 
             };
-
             string jsonString1 = JsonSerializer.Serialize(con1);
             File.WriteAllText(@"ClientInfo.json", jsonString1);
 
@@ -28,7 +25,7 @@ namespace Code_off
 
         public static void OverwriteClientPass(byte[] input)
         {
-            FileConnector con1 = new FileConnector()
+            ClientFileConnect con1 = new ClientFileConnect()
             {
                 secretKey = input
             };
@@ -42,7 +39,7 @@ namespace Code_off
         public static byte[] ReadFromFile()
         {
             string jsonString2 = File.ReadAllText(@"ClientInfo.json");
-            FileConnector readResult = JsonSerializer.Deserialize<FileConnector>(jsonString2);
+            ClientFileConnect readResult = JsonSerializer.Deserialize<ClientFileConnect>(jsonString2);
 
             return readResult.secretKey;
         }
