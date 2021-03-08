@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace PasswordManager3._0
+namespace Code_off
 {
     public class Vault : ServerFileConnect
     {
         public static Dictionary<string, string> pswVault = new Dictionary<string, string>();
 
-        public static Dictionary<string, string> AddToVault(string key, string value)
+        public static Dictionary<string, string> AddToVault(string key, string value, Dictionary<string,string> x)
         {
+            pswVault = x;
             try
             {
                 pswVault.Add(key, value);
@@ -50,31 +50,29 @@ namespace PasswordManager3._0
             }
             else
             {
-                Console.WriteLine("The service you tried to delete does not exist");
+                Console.WriteLine("The serivce you tried to delete does not exist");
             }
             UpdateVault(psw, x);
         }
 
-        public static void ChangeServicePsw(string key, string newPsw)
+        public static void ChangeServicePsw(string key, string newPsw, string oldPas)
         {
-            Dictionary<string, string> dic = ConvertByteToDic(newPsw);
+            Dictionary<string, string> dic = ConvertByteToDic(oldPas);
 
             bool found = false; // create a bool that is false to later determine if the key is found or not.
 
-            foreach(KeyValuePair<string, string> kvp in dic)
+            foreach (KeyValuePair<string, string> kvp in dic)
             {
-                
                 if (kvp.Key == key)
                 {
                     dic[key] = newPsw;
                     found = true; // the key was found therefore "found" is set to true.
-                    Console.WriteLine("Your new password for {key}, is {newPsw}", kvp.Key, kvp.Value);
+                    Console.WriteLine("Your new password for {0}, is {1}", key, newPsw);
                     break;
                 }
                 else
                 {
-                    continue; 
-                    
+                    continue;
                 }
             }
 
@@ -83,7 +81,7 @@ namespace PasswordManager3._0
                 Console.WriteLine("The service doesn't exist.");
             }
 
-            UpdateVault(newPsw, dic);
+            UpdateVault(oldPas, dic);
         }
     }
 }
