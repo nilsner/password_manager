@@ -1,15 +1,21 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
 
-namespace Code_off
+namespace PasswordManager
 {
-    public class Vault : ServerFileConnect
+    
+
+    public class Vault : Dictionary
     {
         public static Dictionary<string, string> pswVault = new Dictionary<string, string>();
 
-        public static Dictionary<string, string> AddToVault(string key, string value, Dictionary<string,string> x)
+        public static Dictionary<string, string> AddToVault(string key, string value)
         {
-            pswVault = x;
+            
             try
             {
                 pswVault.Add(key, value);
@@ -17,44 +23,25 @@ namespace Code_off
             }
             catch (ArgumentException)
             {
-                Console.WriteLine(key + " aldready exist");
+                Console.WriteLine("An element with key = " + key + " already exists.");
                 return pswVault;
             }
+            
         }
 
-        public static void RemoveFromVault(string key, string psw)
+        public static void RemoveFromVault(string key)
         {
-            
-            Dictionary<string, string> x = ConvertByteToDic(psw);
-            int count = 0;
-            foreach (var dic in x)
+            if (!pswVault.ContainsKey(key))
             {
-                if (dic.Key == key)
-                {
-                    count++;
-                }
-            }
-            if (count >= 1)
-            {
-                foreach (KeyValuePair<string, string> kvp in x)
-                {
-                    if (kvp.Key == key)
-                    {
-                        x.Remove(kvp.Key);
-                        Console.WriteLine("Succesfully removed password");
-                    }
-                    else
-                    {
-                        count++;
-                    }
-                }
+                Console.WriteLine("An element with key " + key + " is not found. Please delete an existing key.");
             }
             else
             {
-                Console.WriteLine("The serivce you tried to delete does not exist");
+                pswVault.Remove(key);
             }
-            UpdateVault(psw, x);
-            
         }
+
+
+
     }
 }
