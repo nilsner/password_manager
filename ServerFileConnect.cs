@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text.Json;
 using System.IO;
 using System.Security.Cryptography;
@@ -30,10 +30,9 @@ namespace Code_off
             {
                 Console.WriteLine("Service = {0}, Password = {1}", kvp.Key, kvp.Value);
             }
-            
         }
 
-        public static void CreateAccount()
+        public static void CreateAccount(string mpwd)
         {
             byte[] openIv;
             WriteToFile();
@@ -43,14 +42,18 @@ namespace Code_off
                 openIv = myAes.IV;
             }
 
+            Dictionary<string, string> Emptydick = new Dictionary<string, string>();
+            string jsonString3 = JsonSerializer.Serialize(Emptydick);
+            byte[] y = EncryptStringToBytes_Aes(jsonString3, ConnectsKeyAndPsw(mpwd), openIv);
+
             Server serverObj1 = new Server()
             {
-                vault = null,
+                vault = y,
                 IV = openIv 
             };
 
             string jsonString1 = JsonSerializer.Serialize(serverObj1);
-            File.WriteAllText(@"ServerInfo2.json", jsonString1);
+            File.WriteAllText(@"ServerInfo3.json", jsonString1);
         }
 
         public static void WriteToServer(string inputPsw, string txt, string value) 
@@ -75,24 +78,23 @@ namespace Code_off
             };
 
             string jsonString1 = JsonSerializer.Serialize(serverObj);
-            File.WriteAllText(@"ServerInfo2.json", jsonString1);
-            
+            File.WriteAllText(@"ServerInfo3.json", jsonString1);
         }
 
         public static byte[] ReadFromServerIv()
         {
-            string jsonString = File.ReadAllText(@"ServerInfo2.json");
+            string jsonString = File.ReadAllText(@"ServerInfo3.json");
             Server readResult = JsonSerializer.Deserialize<Server>(jsonString);
             return readResult.IV;
         }
 
         public static byte[] ReadFromServerVault()
         {
-            string jsonString = File.ReadAllText(@"ServerInfo2.json");
+            string jsonString = File.ReadAllText(@"ServerInfo3.json");
             Server readResult = JsonSerializer.Deserialize<Server>(jsonString);
-
             return readResult.vault;
         }
+
         public static Dictionary<string,string> ConvertByteToDic(string inputPsw)
         {
             string svar = AES.DecryptStringFromBytes_Aes(ReadFromServerVault(), ConnectsKeyAndPsw(inputPsw), ReadFromServerIv()); //hej ska vara samma console.readline som rad 17 representerar
@@ -105,12 +107,10 @@ namespace Code_off
                 Dictionary<string, string> readResult = JsonSerializer.Deserialize<Dictionary<string, string>>(svar);
                 return readResult;
             }
-            
         }
 
         public static void UpdateVault(string inputPsw, Dictionary<string, string> x)
         {
-            
             byte[] openIv = ReadFromServerIv();
             byte[] encryptedDic;
             using (Aes myAes = Aes.Create())
@@ -126,8 +126,7 @@ namespace Code_off
                 IV = openIv
             };
             string jsonString1 = JsonSerializer.Serialize(serverObj);
-            File.WriteAllText(@"ServerInfo2.json", jsonString1);
-            
+            File.WriteAllText(@"ServerInfo3.json", jsonString1); 
         }
     }
 }
