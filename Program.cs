@@ -20,37 +20,33 @@ namespace Code_off
                 else if (answer == "B" || answer == "b")
                 {
                     Console.WriteLine("Type your password");
-                    //Eventuell lösenordssäkerhet
                     MasterPassword = Console.ReadLine();
+                    if (ServerFileConnect.ControllPass(MasterPassword) == false)
+                    {
+                        Main();
+                    }
+                    else
+                    {
+                        Console.WriteLine("WELCOME");
+                    }
                 }
                 else
                 {
                     Console.WriteLine("Please use either A, to create a account, or B, to login to an axisting one.");
                 }
-
             }
             while (MasterPassword == "");
 
-            Console.WriteLine("Available commands: \ninit \nlogin \nget \nset \ndrop \nsecret \ncreate");
+            Console.WriteLine("Available commands: \nget \nset \ndrop \nsecret \ncreate");
+            Console.WriteLine();
 
             Console.WriteLine("Type a command");
             string FirstInput = Console.ReadLine();
 
             while (FirstInput != "exit")
             {
-                
                 switch (FirstInput)
                 {
-                    case "login":
-                        if (ServerFileConnect.ControllPass(MasterPassword) == false)
-                        {
-                            //Lösenordet är fel
-                        }
-                        else
-                        {
-                            Console.WriteLine("WELCOME");
-                        }
-                        break;
 
                     case "get":
                         ServerFileConnect.DisplayVault(MasterPassword);
@@ -71,7 +67,12 @@ namespace Code_off
                         break;
 
                     case "secret":
-                        //GÖR FUNKTIONALITETEN
+                        Console.WriteLine("Your secret key is:");
+                        foreach (var secretKey in ClientFileConnect.ReadFromFile())
+                        {
+                            Console.Write("[" + secretKey + "] ");
+                        }   
+                        Console.WriteLine("");
                         break;
 
                     case "create":
@@ -86,6 +87,7 @@ namespace Code_off
                         Console.WriteLine("Given command does not exist");
                         break;
                 }
+                Console.WriteLine();
                 Console.WriteLine("Type a new command or type exit to finish your session");
                 FirstInput = Console.ReadLine();
             }
