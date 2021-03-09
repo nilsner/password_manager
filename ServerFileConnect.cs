@@ -8,9 +8,15 @@ namespace Code_off
 {
     public class ServerFileConnect : ClientFileConnect
     {
-        public static bool ControllPass(string inputPsw) //Metod som kollar om användaren har skrivit rätt lösenord. Om så är fallet returneras true.
+        public static void SerilizeJson(Server input, string serverPath)
         {
-            Dictionary<string, string> Dic = ConvertByteToDic(inputPsw);
+            string jsonString1 = JsonSerializer.Serialize(input);
+            File.WriteAllText(@serverPath, jsonString1);
+        }
+
+        public static bool ControllPass(string inputPsw, string clientPath, string serverPath, string secretKey) //Metod som kollar om användaren har skrivit rätt lösenord. Om så är fallet returneras true.
+        {
+            Dictionary<string, string> Dic = ConvertByteToDic(inputPsw, clientPath, serverPath, secretKey);
             if (Dic == null)
             {
                 Console.WriteLine("Wrong password");
@@ -22,20 +28,39 @@ namespace Code_off
             }
         }
 
-        public static void DisplayVault(string inputPsw)
+        public static void DisplayVault(string inputPsw, string clientPath, string serverPath, string prop, string secretKey)
         {
-            Dictionary<string, string> Dic = ConvertByteToDic(inputPsw);
-            
-            foreach (KeyValuePair<string, string> kvp in Dic)
+            Dictionary<string, string> Dic = ConvertByteToDic(inputPsw, clientPath, serverPath, secretKey);
+            if (prop.Length > 0)
             {
-                Console.WriteLine("Service = {0}, Password = {1}", kvp.Key, kvp.Value);
+                int count = 0;
+                foreach (KeyValuePair<string, string> kvp in Dic)
+                {
+                    if (kvp.Key == prop)
+                    {
+                        Console.WriteLine("Service = {0}, Password = {1}", kvp.Key, kvp.Value);
+                        count++;
+                    }
+                }
+                if (count == 0)
+                {
+                    Console.WriteLine("Your service was not found");
+                }
+            }
+            else
+            {
+                foreach (KeyValuePair<string, string> kvp in Dic)
+                {
+                    Console.WriteLine("Service = {0}, Password = {1}", kvp.Key, kvp.Value);
+                }
             }
         }
+        
 
-        public static void CreateAccount(string mpwd)
+        public static void CreateAccount(string mpwd, string serverPath, string clientPath, string secretKey)
         {
             byte[] openIv;
-            WriteToFile();
+            WriteToFile(serverPath);
 
             using (Aes myAes = Aes.Create())
             {
@@ -44,7 +69,7 @@ namespace Code_off
 
             Dictionary<string, string> Emptydick = new Dictionary<string, string>();
             string jsonString3 = JsonSerializer.Serialize(Emptydick);
-            byte[] y = EncryptStringToBytes_Aes(jsonString3, ConnectsKeyAndPsw(mpwd), openIv);
+            byte[] y = EncryptStringToBytes_Aes(jsonString3, ConnectsKeyAndPsw(mpwd, clientPath, secretKey), openIv);
 
             Server serverObj1 = new Server()
             {
@@ -52,11 +77,10 @@ namespace Code_off
                 IV = openIv 
             };
 
-            string jsonString1 = JsonSerializer.Serialize(serverObj1);
-            File.WriteAllText(@"ServerInfo3.json", jsonString1);
+            SerilizeJson(serverObj1, serverPath);
         }
 
-        public static void WriteToServer(string inputPsw, string txt, string value) 
+        public static void WriteToServer(string inputPsw, string txt, string value, string serverPath, string clientPath, string secretKey1) 
         {
             byte[] openIv;
             byte[] svar4;
@@ -64,9 +88,9 @@ namespace Code_off
             using (Aes myAes = Aes.Create())
             {
 
-                byte[] secretKey = ConnectsKeyAndPsw(inputPsw);
-                openIv = ReadFromServerIv();
-                string jsonString3 = JsonSerializer.Serialize(Vault.AddToVault(txt, value, ConvertByteToDic(inputPsw)));
+                byte[] secretKey = ConnectsKeyAndPsw(inputPsw, clientPath, secretKey1);
+                openIv = ReadFromServerIv(serverPath);
+                string jsonString3 = JsonSerializer.Serialize(Vault.AddToVault(txt, value, ConvertByteToDic(inputPsw, clientPath, serverPath, secretKey1)));
                 svar4 = EncryptStringToBytes_Aes(jsonString3, secretKey, openIv);
 
             }
@@ -76,28 +100,26 @@ namespace Code_off
                 vault = svar4,
                 IV = openIv
             };
-
-            string jsonString1 = JsonSerializer.Serialize(serverObj);
-            File.WriteAllText(@"ServerInfo3.json", jsonString1);
+            SerilizeJson(serverObj, serverPath);
         }
 
-        public static byte[] ReadFromServerIv()
+        public static byte[] ReadFromServerIv(string serverPath)
         {
-            string jsonString = File.ReadAllText(@"ServerInfo3.json");
+            string jsonString = File.ReadAllText(@serverPath);
             Server readResult = JsonSerializer.Deserialize<Server>(jsonString);
             return readResult.IV;
         }
 
-        public static byte[] ReadFromServerVault()
+        public static byte[] ReadFromServerVault(string serverPath)
         {
-            string jsonString = File.ReadAllText(@"ServerInfo3.json");
+            string jsonString = File.ReadAllText(@serverPath);
             Server readResult = JsonSerializer.Deserialize<Server>(jsonString);
             return readResult.vault;
         }
 
-        public static Dictionary<string,string> ConvertByteToDic(string inputPsw)
+        public static Dictionary<string,string> ConvertByteToDic(string inputPsw, string clientPath, string serverPath, string secretKey)
         {
-            string svar = AES.DecryptStringFromBytes_Aes(ReadFromServerVault(), ConnectsKeyAndPsw(inputPsw), ReadFromServerIv()); //hej ska vara samma console.readline som rad 17 representerar
+            string svar = AES.DecryptStringFromBytes_Aes(ReadFromServerVault(serverPath), ConnectsKeyAndPsw(inputPsw, clientPath, secretKey), ReadFromServerIv(serverPath)); //hej ska vara samma console.readline som rad 17 representerar
             if (svar == null)
             {
                 return null;
@@ -109,13 +131,13 @@ namespace Code_off
             }
         }
 
-        public static void UpdateVault(string inputPsw, Dictionary<string, string> x)
+        public static void UpdateVault(string inputPsw, Dictionary<string, string> x, string serverPath, string clientPath, string secretKey1)
         {
-            byte[] openIv = ReadFromServerIv();
+            byte[] openIv = ReadFromServerIv(serverPath);
             byte[] encryptedDic;
             using (Aes myAes = Aes.Create())
             {
-                byte[] secretKey = ConnectsKeyAndPsw(inputPsw);
+                byte[] secretKey = ConnectsKeyAndPsw(inputPsw, clientPath, secretKey1);
                 string jsonString3 = JsonSerializer.Serialize(x);
                 encryptedDic = EncryptStringToBytes_Aes(jsonString3, secretKey, openIv);
             }
@@ -125,8 +147,7 @@ namespace Code_off
                 vault = encryptedDic,
                 IV = openIv
             };
-            string jsonString1 = JsonSerializer.Serialize(serverObj);
-            File.WriteAllText(@"ServerInfo3.json", jsonString1); 
+            SerilizeJson(serverObj, serverPath);
         }
     }
 }

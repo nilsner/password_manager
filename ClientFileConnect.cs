@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Text.Json;
 
@@ -10,7 +10,7 @@ namespace Code_off
         public byte[] secretKey { get; set; }
 
         // Function to write data to a file using JSON.
-        public static void WriteToFile() // Fetching the secretKey and adding it to a JSON file. 
+        public static void WriteToFile(string clientPath) // Fetching the secretKey and adding it to a JSON file. 
         {
             byte[] saltClient = SKeyGenerator();
 
@@ -19,28 +19,16 @@ namespace Code_off
                 secretKey = saltClient 
             };
             string jsonString1 = JsonSerializer.Serialize(con1);
-            File.WriteAllText(@"ClientInfo.json", jsonString1);
+            File.WriteAllText(@clientPath, jsonString1); //@"ClientInfo3.json"
 
         }
-
-        public static void OverwriteClientPass(byte[] input)
-        {
-            ClientFileConnect con1 = new ClientFileConnect()
-            {
-                secretKey = input
-            };
-
-            string jsonString1 = JsonSerializer.Serialize(con1);
-            File.WriteAllText(@"ClientInfo.json", jsonString1);
-        }
-      
 
         // Function to get data from file using JSON.
-        public static byte[] ReadFromFile()
+        public static byte[] ReadFromFile(string clientPath)
         {
-            string jsonString2 = File.ReadAllText(@"ClientInfo.json");
+            string jsonString2 = File.ReadAllText(@clientPath);
             ClientFileConnect readResult = JsonSerializer.Deserialize<ClientFileConnect>(jsonString2);
-
+            //string svar = Convert.ToBase64String()
             return readResult.secretKey;
         }
     }

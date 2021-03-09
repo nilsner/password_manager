@@ -22,9 +22,9 @@ namespace Code_off
             }
         }
 
-        public static void RemoveFromVault(string key, string psw)
+        public static void RemoveFromVault(string key, string psw, string serverPath, string clientPath, string secretKey)
         {
-            Dictionary<string, string> x = ConvertByteToDic(psw);
+            Dictionary<string, string> x = ConvertByteToDic(psw, clientPath, serverPath, secretKey);
             int count = 0;
             foreach (var dic in x)
             {
@@ -52,12 +52,12 @@ namespace Code_off
             {
                 Console.WriteLine("The serivce you tried to delete does not exist");
             }
-            UpdateVault(psw, x);
+            UpdateVault(psw, x, serverPath, clientPath, secretKey);
         }
 
-        public static void ChangeServicePsw(string key, string newPsw, string oldPas)
+        public static void ChangeServicePsw(string key, string newPsw, string oldPas, string serverPath, string clientPath, string secretKey)
         {
-            Dictionary<string, string> dic = ConvertByteToDic(oldPas);
+            Dictionary<string, string> dic = ConvertByteToDic(oldPas, clientPath, serverPath, secretKey);
 
             bool found = false; // create a bool that is false to later determine if the key is found or not.
 
@@ -80,8 +80,8 @@ namespace Code_off
             {
                 Console.WriteLine("The service doesn't exist.");
             }
-
-            UpdateVault(oldPas, dic);
+            //testtest
+            UpdateVault(oldPas, dic, serverPath, clientPath, secretKey);
         }
     }
 }
