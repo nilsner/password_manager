@@ -1,11 +1,13 @@
-﻿using System.Security.Cryptography;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using System.IO;
+using System.Security.Cryptography;
 using System.Text.Json;
-using System;
 
-namespace Code_off
+namespace PasswordManager3._0
 {
-    public class SecretKey 
+    public class SecretKey
     {
         public SecretKey()
         {

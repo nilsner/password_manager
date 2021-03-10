@@ -1,10 +1,12 @@
 ﻿using System;
-using System.IO;
+using System.Collections.Generic;
+using System.Text;
 using System.Text.Json;
+using System.IO;
 
-namespace Code_off
+namespace PasswordManager3._0
 {
-    public class ClientFileConnect : AES 
+    public class ClientFileConnect : AES
     {
 
         public byte[] secretKey { get; set; }
@@ -16,10 +18,10 @@ namespace Code_off
 
             ClientFileConnect con1 = new ClientFileConnect()
             {
-                secretKey = saltClient 
+                secretKey = saltClient
             };
             string jsonString1 = JsonSerializer.Serialize(con1);
-            File.WriteAllText(@clientPath, jsonString1); //@"ClientInfo3.json"
+            File.WriteAllText(@clientPath, jsonString1); 
 
         }
 

@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
-namespace Code_off
+namespace PasswordManager3._0
 {
     public class Vault : ServerFileConnect
     {
         public static Dictionary<string, string> pswVault = new Dictionary<string, string>();
 
-        public static Dictionary<string, string> AddToVault(string key, string value, Dictionary<string,string> x)
+        public static Dictionary<string, string> AddToVault(string key, string value, Dictionary<string, string> x)
         {
             pswVault = x;
             try

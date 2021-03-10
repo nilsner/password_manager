@@ -1,10 +1,11 @@
 ﻿using System;
-using System.Text.Json;
-using System.IO;
-using System.Security.Cryptography;
 using System.Collections.Generic;
+using System.Text;
+using System.Text.Json;
+using System.Security.Cryptography;
+using System.IO;
 
-namespace Code_off
+namespace PasswordManager3._0
 {
     public class ServerFileConnect : ClientFileConnect
     {
@@ -55,12 +56,12 @@ namespace Code_off
                 }
             }
         }
-        
+
 
         public static void CreateAccount(string mpwd, string serverPath, string clientPath, string secretKey)
         {
             byte[] openIv;
-            WriteToFile(serverPath);
+            WriteToFile(clientPath);
 
             using (Aes myAes = Aes.Create())
             {
@@ -74,13 +75,13 @@ namespace Code_off
             Server serverObj1 = new Server()
             {
                 vault = y,
-                IV = openIv 
+                IV = openIv
             };
 
             SerilizeJson(serverObj1, serverPath);
         }
 
-        public static void WriteToServer(string inputPsw, string txt, string value, string serverPath, string clientPath, string secretKey1) 
+        public static void WriteToServer(string inputPsw, string txt, string value, string serverPath, string clientPath, string secretKey1)
         {
             byte[] openIv;
             byte[] svar4;
@@ -117,7 +118,7 @@ namespace Code_off
             return readResult.vault;
         }
 
-        public static Dictionary<string,string> ConvertByteToDic(string inputPsw, string clientPath, string serverPath, string secretKey)
+        public static Dictionary<string, string> ConvertByteToDic(string inputPsw, string clientPath, string serverPath, string secretKey)
         {
             string svar = AES.DecryptStringFromBytes_Aes(ReadFromServerVault(serverPath), ConnectsKeyAndPsw(inputPsw, clientPath, secretKey), ReadFromServerIv(serverPath)); //hej ska vara samma console.readline som rad 17 representerar
             if (svar == null)

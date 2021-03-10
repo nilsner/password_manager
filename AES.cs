@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using System.IO;
 using System.Security.Cryptography;
 
-namespace Code_off
+namespace PasswordManager3._0
 {
     public class AES : ConnectionKey
     {
@@ -13,7 +15,7 @@ namespace Code_off
         }
         public static byte[] EncryptStringToBytes_Aes(string plainText, byte[] Key, byte[] IV)
         {
-           
+
             if (plainText == null || plainText.Length <= 0)
                 throw new ArgumentNullException("plainText");
             if (Key == null || Key.Length <= 0)
@@ -46,19 +48,19 @@ namespace Code_off
 
         public static string DecryptStringFromBytes_Aes(byte[] cipherText, byte[] Key, byte[] IV)
         {
-            
+
             if (cipherText == null || cipherText.Length <= 0)
                 throw new ArgumentNullException("cipherText");
             if (Key == null || Key.Length <= 0 || Key.Length > 16) //Om längre än 16 så ska det inte köras
                 throw new ArgumentNullException("Key");
             if (IV == null || IV.Length <= 0)
                 throw new ArgumentNullException("IV");
-            
+
             string plaintext = null;
 
             using (Aes aesAlg = Aes.Create())
             {
-               
+
                 aesAlg.Key = Key;
                 aesAlg.IV = IV;
 
@@ -81,7 +83,7 @@ namespace Code_off
                             catch (Exception)
                             {
 
-                            }                          
+                            }
                         }
                     }
                 }

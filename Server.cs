@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
-namespace Code_off
+namespace PasswordManager3._0
 {
     public class Server : Client
     {
