@@ -15,7 +15,7 @@ namespace PasswordManager3._0
             File.WriteAllText(@serverPath, jsonString1);
         }
 
-        public static bool ControllPass(string inputPsw, string clientPath, string serverPath, string secretKey) //Metod som kollar om användaren har skrivit rätt lösenord. Om så är fallet returneras true.
+        public static bool ControllPass(string inputPsw, string clientPath, string serverPath, string secretKey) 
         {
             Dictionary<string, string> Dic = ConvertByteToDic(inputPsw, clientPath, serverPath, secretKey);
             if (Dic == null)
