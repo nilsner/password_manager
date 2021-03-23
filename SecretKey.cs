@@ -26,10 +26,7 @@ namespace PasswordManager3._0
 
         public static string DisplaySecretKey(string clientPath)
         {
-            //string jsonString2 = File.ReadAllText(@clientPath);
-            ////Convert.ToBase64String används nämligen i 
-            //return jsonString2;
-
+            
             string jsonString2 = File.ReadAllText(@clientPath);
             ClientFileConnect readResult = JsonSerializer.Deserialize<ClientFileConnect>(jsonString2);
             string svar = Convert.ToBase64String(readResult.secretKey);
