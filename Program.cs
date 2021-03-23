@@ -7,11 +7,7 @@ namespace PasswordManager3._0
     {
         public static void Main(string[] args)
         {
-            // bandy "client.json", "server.json"
-            // fotboll "cl.json", "se.json"
-
-            args = new string[] { "get", "client.json", "server.json" };
-           
+                       
             int count = 0;
             if (args[0] == "secret")
             {
@@ -28,13 +24,11 @@ namespace PasswordManager3._0
             {
                 if (args[1].Length < 1 || args[2].Length < 1 || args[1].Trim().Length == 0 || args[2].Trim().Length == 0)
                 {
-                    //FEL FÅR INTE FORSÄTTA EFTER
                     count++;
                 }
             }
             else
             {
-                //FEL FÅR INTE FORSÄTTA EFTER
                 count++;
             }
 
@@ -44,20 +38,17 @@ namespace PasswordManager3._0
             }
             else
             {
-                switch (args[0]) //ALLA METODER MÅSTE TA EMOT OCH ANVÄNDA args[1] och args[2]. Innan det här körs ska man kontrollera att det ens finns tillräckligt med inputs och i korrekt form
+                switch (args[0]) 
                 {
 
-                    case "login": // HELT KLAR vad vi kan förstå
+                    case "login": 
                         Console.WriteLine("Type your master password");
                         string masterPasswordLogin = Console.ReadLine();
                         Console.WriteLine("Type your secret key");
                         string secretKeyLogin = Console.ReadLine();
                         if (ServerFileConnect.ControllPass(masterPasswordLogin, args[1], args[2], secretKeyLogin) == true)
                         {
-                            //RÄTT INLOGG, commands är nu tillgängliga
-
-                            Console.WriteLine("You're now logged in"); //KOPIERAR JAG IN HEMLIGA NYCKELN MED COPY + PASTE FUNKAR DET MEN INTE OM JAG SKRIVER IN SkEY MANUELLT
-
+                           Console.WriteLine("You're now logged in");
                         }
                         else
                         {
@@ -65,7 +56,7 @@ namespace PasswordManager3._0
                         }
                         break;
 
-                    case "init": //HELT KLAR obs Lösenordet kan vara vad som helst, dvs ett enkelt mellanslag
+                    case "init": 
                         if (args.Length > 3)
                         {
                             Console.WriteLine("Input was given in wrong format");
@@ -79,7 +70,7 @@ namespace PasswordManager3._0
                         }
                         break;
 
-                    case "get": //HELT KLAR
+                    case "get": 
                         Console.WriteLine("Type your master password");
                         string masterPassword = Console.ReadLine();
                         string sKey = SecretKey.DisplaySecretKey(args[1]);                       
@@ -106,7 +97,7 @@ namespace PasswordManager3._0
 
                         
 
-                    case "set": // Helt klar
+                    case "set": 
                         if (args.Length > 4)
                         {
                             Console.WriteLine("Something went wrong, try again");
@@ -129,7 +120,7 @@ namespace PasswordManager3._0
                         }
                         break;
 
-                    case "drop": // Helt klar
+                    case "drop": 
                         if (args.Length > 4)
                         {
                             Console.WriteLine("Something went wrong, try again");
@@ -147,11 +138,11 @@ namespace PasswordManager3._0
                         }
                         break;
 
-                    case "secret": //HELT KLAR
+                    case "secret": 
                         Console.WriteLine("Your secret key is: \n" + SecretKey.DisplaySecretKey(args[1]));
                         break;
 
-                    case "create": // Helt klar, användaren skapar en ny service och ett lösenord till den
+                    case "create": 
                         if(args.Length != 3)
                         {
                             Console.WriteLine("Something went wrong, try again");
@@ -179,53 +170,6 @@ namespace PasswordManager3._0
                         break;
                 }
             }
-            //Console.WriteLine();
-            //Console.WriteLine("Type a new command or type exit to finish your session");
-            //FirstInput = Console.ReadLine();
-            //}
-
-            //args = new string[] { "get", "ClientInfo3.json", "ServerInfo3.json" }; //RÄTT FORMAT OCH FILNAMN FÖR NILS
-
-            //Console.WriteLine("Do you want to create a new account (press A) or login to existing (press B).");
-
-            //string MasterPassword = "";
-            //do
-            //{
-            //    string answer = Console.ReadLine(); 
-            //    if (answer == "A" || answer == "a")
-            //    {
-            //        Console.WriteLine("Create a new password");
-            //        MasterPassword = Console.ReadLine();
-            //        ServerFileConnect.CreateAccount(MasterPassword, args[2], args[1]);
-            //    }
-            //    else if (answer == "B" || answer == "b")
-            //    {
-            //        Console.WriteLine("Type your password");
-            //        MasterPassword = Console.ReadLine();
-            //        if (ServerFileConnect.ControllPass(MasterPassword, args[1], args[2]) == false)
-            //        {
-            //            Main(args);
-            //        }
-            //        else
-            //        {
-            //            Console.WriteLine("WELCOME");
-            //        }
-            //    }
-            //    else
-            //    {
-            //        Console.WriteLine("Please use either A, to create a account, or B, to login to an axisting one.");
-            //    }
-            //}
-            //while (MasterPassword == "");
-
-            //Console.WriteLine("Available commands: \nget \nset \ndrop \nsecret \ncreate");
-            //Console.WriteLine();
-
-            //Console.WriteLine("Type a command");
-            //string FirstInput = Console.ReadLine();
-
-            //while (FirstInput != "exit")
-            //{
         }
     }
 }
