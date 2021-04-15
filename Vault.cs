@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -79,9 +79,10 @@ namespace PasswordManager3._0
 
             if (!found) // if found is false no key matched and therefore the service does not exist in the dictionary
             {
-                Console.WriteLine("The service doesn't exist.");
+                
+                AddToVault(key, newPsw, dic);
             }
-            
+
             UpdateVault(oldPas, dic, serverPath, clientPath, secretKey);
         }
     }
